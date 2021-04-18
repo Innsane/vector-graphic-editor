@@ -1,0 +1,20 @@
+import sys
+
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow
+
+from project.package.mainwindow import WindowUi
+
+
+def setup_window():
+    main_window = QMainWindow()
+    window_ui = WindowUi()
+    window_ui.setupUi(main_window)
+    main_window.show()
+    return main_window
+
+
+def run():
+    app = QApplication(sys.argv)
+    main = setup_window()
+    app.exec_()
