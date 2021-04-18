@@ -1,15 +1,18 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 
 
 class WindowUi(object):
-    def setupUi(self, MainWindow):
+    def setup_ui(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowIcon(QtGui.QIcon('icons/logo.png'))
         MainWindow.resize(1000, 700)
         MainWindow.setMinimumSize(QtCore.QSize(300, 200))
         MainWindow.setMouseTracking(False)
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
+
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setDefaultUp(False)
@@ -130,10 +133,12 @@ class WindowUi(object):
         self.menubar.addAction(self.menuShape.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
-        self.retranslateUi(MainWindow)
+
+
+        self.retranslate_ui(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslate_ui(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Vectoring"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
@@ -183,5 +188,5 @@ class WindowUi(object):
         self.actionFill.setShortcut(_translate("MainWindow", "Ctrl+F"))
         self.actionRuber.setText(_translate("MainWindow", "Ruber"))
         self.actionRuber.setShortcut(_translate("MainWindow", "Ctrl+R"))
-        self.actionAdd_image.setText(_translate("MainWindow", "Add image"))
+        self.actionAdd_image.setText(_translate("MainWindow", "Add icons"))
         self.actionAdd_image.setShortcut(_translate("MainWindow", "Ctrl+I"))
