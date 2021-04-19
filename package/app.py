@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 
-from package import WindowUi
+from package.mainwindow import WindowUi
 
 
 def setup_window():
