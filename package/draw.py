@@ -1,12 +1,10 @@
 from PyQt5 import QtGui
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QLabel
-
-from package.mainwindow import MainWindow
+from PyQt5.QtWidgets import QLabel, QMainWindow
 
 
 class MyLabel(QLabel):
-    def __init__(self, parent: MainWindow):
+    def __init__(self, parent: QMainWindow):
         super().__init__(parent)
         self.setup()
         self.last_x, self.last_y = None, None
