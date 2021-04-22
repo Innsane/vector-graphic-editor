@@ -1,10 +1,9 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow
+
 
 from package.mainwindow import MainWindow
-from package.draw import MyLabel
 
 
 def setup_window():
