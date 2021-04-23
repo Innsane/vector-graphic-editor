@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QAction, QDialog, QScrollBar
+from PyQt5.QtWidgets import QMainWindow
 
 from package.draw import MyLabel
 from package.pensizewidget import PenSizeWidget
@@ -59,18 +59,8 @@ class MainWindow(QMainWindow):
 
 
         # change size
-        self.action1 = QtWidgets.QAction(self)
-        self.action1.setObjectName("action1")
-        self.action2 = QtWidgets.QAction(self)
-        self.action2.setObjectName("action2")
-        self.action4 = QtWidgets.QAction(self)
-        self.action4.setObjectName("action4")
-        self.action8 = QtWidgets.QAction(self)
-        self.action8.setObjectName("action8")
-        self.action16 = QtWidgets.QAction(self)
-        self.action16.setObjectName("action16")
-        self.action32 = QtWidgets.QAction(self)
-        self.action32.setObjectName("action32")
+        self.actionChange = QtWidgets.QAction(self)
+        self.actionChange.setObjectName("action1")
 
         # change color
         self.actionBlack = QtWidgets.QAction(self)
@@ -124,12 +114,7 @@ class MainWindow(QMainWindow):
         self.menuFile.addAction(self.actionSave_as)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionAdd_image)
-        self.menuSize.addAction(self.action1)
-        self.menuSize.addAction(self.action2)
-        self.menuSize.addAction(self.action4)
-        self.menuSize.addAction(self.action8)
-        self.menuSize.addAction(self.action16)
-        self.menuSize.addAction(self.action32)
+        self.menuSize.addAction(self.actionChange)
         self.menuColor.addAction(self.actionBlack)
         self.menuColor.addAction(self.actionRed)
         self.menuColor.addAction(self.actionGreen)
@@ -157,8 +142,6 @@ class MainWindow(QMainWindow):
         self.menubar.addAction(self.menuShape.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
-        self.action4.triggered.connect(self.changeSizeToFour)
-        self.action1.triggered.connect(self.changeSizeToOne)
         self.menuSize.triggered.connect(self.showChangeSizeDialog)
 
 
@@ -188,12 +171,7 @@ class MainWindow(QMainWindow):
         self.actionTriangle.setText(_translate("MainWindow", "Triangle"))
         self.actionStar.setText(_translate("MainWindow", "Star"))
 
-        self.action1.setText(_translate("MainWindow", "1"))
-        self.action2.setText(_translate("MainWindow", "2"))
-        self.action4.setText(_translate("MainWindow", "4"))
-        self.action8.setText(_translate("MainWindow", "8"))
-        self.action16.setText(_translate("MainWindow", "16"))
-        self.action32.setText(_translate("MainWindow", "32"))
+        self.actionChange.setText(_translate("MainWindow", "Change"))
 
         self.actionBlack.setText(_translate("MainWindow", "Black"))
         self.actionRed.setText(_translate("MainWindow", "Red"))
@@ -222,25 +200,15 @@ class MainWindow(QMainWindow):
 
     def add_widgets(self):
         self.pen_size_widget = PenSizeWidget(self)
-
-
-    def changeSizeToOne(self, s):
-        self.label.pen.setWidth(1)
-        print("size changeed to one", s)
-
-    def changeSizeToFour(self, s):
-        self.label.pen.setWidth(4)
-        print("size changeed to four", s)
-        print(self.dialogs)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
 
     def showChangeSizeDialog(self):
-        print(self.menuSize.x())
-        print(self.menuSize.y())
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
         self.pen_size_widget.show()
 
-    # def on_button_click(self):
-    #     print(self.dialogs)
+    def setPenSize(self, value):
+        self.label.pen.setWidth(value)
 
-
-
+    def setLabelSize(self, value):
+        self.pen_size_widget.PenSizeLabel.setText(str(value))

@@ -19,16 +19,20 @@ class PenSizeWidget(QMainWindow):
 
     def setupUi(self):
         self.setObjectName("ChangeSizeWidget")
+        self.setMaximumSize(150, 200)
         self.resize(150, 200)
         self.setStyleSheet("background-color: rgb(255, 255, 255);")
+
         self.PenSizeScroll = QtWidgets.QScrollBar(self)
         self.PenSizeScroll.setGeometry(QtCore.QRect(30, 10, 20, 180))
         self.PenSizeScroll.setStyleSheet("background-color: rgb(226, 226, 226);")
+        self.PenSizeScroll.setMinimum(1)
         self.PenSizeScroll.setMaximum(50)
         self.PenSizeScroll.setPageStep(1)
         self.PenSizeScroll.setProperty("value", 2)
         self.PenSizeScroll.setOrientation(QtCore.Qt.Vertical)
         self.PenSizeScroll.setObjectName("PenSizeScroll")
+
         self.PenSizeLabel = QtWidgets.QLabel(self)
         self.PenSizeLabel.setGeometry(QtCore.QRect(80, 90, 50, 20))
         font = QtGui.QFont()
@@ -40,6 +44,7 @@ class PenSizeWidget(QMainWindow):
         self.PenSizeLabel.setAutoFillBackground(False)
         self.PenSizeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.PenSizeLabel.setObjectName("PenSizeLabel")
+
         self.TextLabel = QtWidgets.QLabel(self)
         self.TextLabel.setGeometry(QtCore.QRect(80, 60, 50, 20))
         font = QtGui.QFont()
@@ -58,6 +63,6 @@ class PenSizeWidget(QMainWindow):
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("ChangeSizeWidget", "Form"))
-        self.PenSizeLabel.setText(_translate("ChangeSizeWidget", "4"))
+        self.PenSizeLabel.setText(_translate("ChangeSizeWidget", str(self.PenSizeScroll.value())))
         self.TextLabel.setText(_translate("ChangeSizeWidget", "Size:"))
 

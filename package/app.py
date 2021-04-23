@@ -13,5 +13,5 @@ def setup_window():
 
 def run():
     app = QApplication(sys.argv)
-    main = setup_window()
+    main_window = setup_window()
     app.exec_()
