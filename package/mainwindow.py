@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QAction, QDialog, QScrollBar
 
 from package.draw import MyLabel
+from package.pensizewidget import PenSizeWidget
 
 WIDTH = 1000
 HEIGHT = 700
@@ -11,6 +12,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setup_ui()
+        self.add_widgets()
+        self.dialogs = list()
 
     def setup_ui(self):
         self.setObjectName("MainWindow")
@@ -51,14 +54,11 @@ class MainWindow(QMainWindow):
         self.actionSave.setObjectName("actionSave")
         self.actionSave_as = QtWidgets.QAction(self)
         self.actionSave_as.setObjectName("actionSave_as")
-        self.actionRectangle = QtWidgets.QAction(self)
-        self.actionRectangle.setObjectName("actionRectangle")
-        self.actionSquare = QtWidgets.QAction(self)
-        self.actionSquare.setObjectName("actionSquare")
-        self.actionTriangle = QtWidgets.QAction(self)
-        self.actionTriangle.setObjectName("actionTriangle")
-        self.actionStar = QtWidgets.QAction(self)
-        self.actionStar.setObjectName("actionStar")
+        self.actionAdd_image = QtWidgets.QAction(self)
+        self.actionAdd_image.setObjectName("actionAdd_image")
+
+
+        # change size
         self.action1 = QtWidgets.QAction(self)
         self.action1.setObjectName("action1")
         self.action2 = QtWidgets.QAction(self)
@@ -71,6 +71,8 @@ class MainWindow(QMainWindow):
         self.action16.setObjectName("action16")
         self.action32 = QtWidgets.QAction(self)
         self.action32.setObjectName("action32")
+
+        # change color
         self.actionBlack = QtWidgets.QAction(self)
         self.actionBlack.setObjectName("actionBlack")
         self.actionRed = QtWidgets.QAction(self)
@@ -79,6 +81,8 @@ class MainWindow(QMainWindow):
         self.actionGreen.setObjectName("actionGreen")
         self.actionYellow = QtWidgets.QAction(self)
         self.actionYellow.setObjectName("actionYellow")
+
+        # edit workspace
         self.actionInfo = QtWidgets.QAction(self)
         self.actionInfo.setObjectName("actionInfo")
         self.actionUndo = QtWidgets.QAction(self)
@@ -91,8 +95,20 @@ class MainWindow(QMainWindow):
         self.actionCopy.setObjectName("actionCopy")
         self.actionPaste = QtWidgets.QAction(self)
         self.actionPaste.setObjectName("actionPaste")
+
+        # draw shape
+        self.actionRectangle = QtWidgets.QAction(self)
+        self.actionRectangle.setObjectName("actionRectangle")
+        self.actionSquare = QtWidgets.QAction(self)
+        self.actionSquare.setObjectName("actionSquare")
+        self.actionTriangle = QtWidgets.QAction(self)
+        self.actionTriangle.setObjectName("actionTriangle")
+        self.actionStar = QtWidgets.QAction(self)
+        self.actionStar.setObjectName("actionStar")
         self.actionCircle = QtWidgets.QAction(self)
         self.actionCircle.setObjectName("actionCircle")
+
+        # tools
         self.actionBrush = QtWidgets.QAction(self)
         self.actionBrush.setObjectName("actionBrush")
         self.actionFill = QtWidgets.QAction(self)
@@ -100,8 +116,8 @@ class MainWindow(QMainWindow):
         self.actionRuber = QtWidgets.QAction(self)
         self.actionRuber.setShortcutContext(QtCore.Qt.WindowShortcut)
         self.actionRuber.setObjectName("actionRuber")
-        self.actionAdd_image = QtWidgets.QAction(self)
-        self.actionAdd_image.setObjectName("actionAdd_image")
+
+        # setup menu
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
@@ -141,6 +157,11 @@ class MainWindow(QMainWindow):
         self.menubar.addAction(self.menuShape.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
+        self.action4.triggered.connect(self.changeSizeToFour)
+        self.action1.triggered.connect(self.changeSizeToOne)
+        self.menuSize.triggered.connect(self.showChangeSizeDialog)
+
+
         self.retranslate_ui(self)
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -166,12 +187,14 @@ class MainWindow(QMainWindow):
         self.actionSquare.setText(_translate("MainWindow", "Square"))
         self.actionTriangle.setText(_translate("MainWindow", "Triangle"))
         self.actionStar.setText(_translate("MainWindow", "Star"))
+
         self.action1.setText(_translate("MainWindow", "1"))
         self.action2.setText(_translate("MainWindow", "2"))
         self.action4.setText(_translate("MainWindow", "4"))
         self.action8.setText(_translate("MainWindow", "8"))
         self.action16.setText(_translate("MainWindow", "16"))
         self.action32.setText(_translate("MainWindow", "32"))
+
         self.actionBlack.setText(_translate("MainWindow", "Black"))
         self.actionRed.setText(_translate("MainWindow", "Red"))
         self.actionGreen.setText(_translate("MainWindow", "Green"))
@@ -194,7 +217,30 @@ class MainWindow(QMainWindow):
         self.actionFill.setShortcut(_translate("MainWindow", "Ctrl+F"))
         self.actionRuber.setText(_translate("MainWindow", "Ruber"))
         self.actionRuber.setShortcut(_translate("MainWindow", "Ctrl+R"))
-        self.actionAdd_image.setText(_translate("MainWindow", "Add icons"))
+        self.actionAdd_image.setText(_translate("MainWindow", "Add image"))
         self.actionAdd_image.setShortcut(_translate("MainWindow", "Ctrl+I"))
+
+    def add_widgets(self):
+        self.pen_size_widget = PenSizeWidget(self)
+
+
+    def changeSizeToOne(self, s):
+        self.label.pen.setWidth(1)
+        print("size changeed to one", s)
+
+    def changeSizeToFour(self, s):
+        self.label.pen.setWidth(4)
+        print("size changeed to four", s)
+        print(self.dialogs)
+
+    def showChangeSizeDialog(self):
+        print(self.menuSize.x())
+        print(self.menuSize.y())
+        self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
+        self.pen_size_widget.show()
+
+    # def on_button_click(self):
+    #     print(self.dialogs)
+
 
 
