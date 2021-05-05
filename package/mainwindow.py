@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow
 
 from package.draw import MyLabel
+from package.pensizewidget import PenSizeWidget
 
 WIDTH = 1000
 HEIGHT = 700
@@ -11,16 +12,20 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setup_ui()
+        self.add_widgets()
 
     def setup_ui(self):
+        # setup main window
         self.setObjectName("MainWindow")
         self.setWindowIcon(QtGui.QIcon('icons/logo.png'))
         self.resize(WIDTH, HEIGHT)
         self.setMouseTracking(True)
 
+        # setup central widget as workspace
         self.label = MyLabel(self)
         self.setCentralWidget(self.label)
 
+        # setup menu bar
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setDefaultUp(False)
@@ -57,26 +62,15 @@ class MainWindow(QMainWindow):
 
         self.actionSave_as = QtWidgets.QAction(self)
         self.actionSave_as.setObjectName("actionSave_as")
-        self.actionRectangle = QtWidgets.QAction(self)
-        self.actionRectangle.setObjectName("actionRectangle")
-        self.actionSquare = QtWidgets.QAction(self)
-        self.actionSquare.setObjectName("actionSquare")
-        self.actionTriangle = QtWidgets.QAction(self)
-        self.actionTriangle.setObjectName("actionTriangle")
-        self.actionStar = QtWidgets.QAction(self)
-        self.actionStar.setObjectName("actionStar")
-        self.action1 = QtWidgets.QAction(self)
-        self.action1.setObjectName("action1")
-        self.action2 = QtWidgets.QAction(self)
-        self.action2.setObjectName("action2")
-        self.action4 = QtWidgets.QAction(self)
-        self.action4.setObjectName("action4")
-        self.action8 = QtWidgets.QAction(self)
-        self.action8.setObjectName("action8")
-        self.action16 = QtWidgets.QAction(self)
-        self.action16.setObjectName("action16")
-        self.action32 = QtWidgets.QAction(self)
-        self.action32.setObjectName("action32")
+        self.actionAdd_image = QtWidgets.QAction(self)
+        self.actionAdd_image.setObjectName("actionAdd_image")
+
+
+        # change size
+        self.actionChange = QtWidgets.QAction(self)
+        self.actionChange.setObjectName("action1")
+
+        # change color
         self.actionBlack = QtWidgets.QAction(self)
         self.actionBlack.setObjectName("actionBlack")
         self.actionRed = QtWidgets.QAction(self)
@@ -85,6 +79,8 @@ class MainWindow(QMainWindow):
         self.actionGreen.setObjectName("actionGreen")
         self.actionYellow = QtWidgets.QAction(self)
         self.actionYellow.setObjectName("actionYellow")
+
+        # edit drawing
         self.actionInfo = QtWidgets.QAction(self)
         self.actionInfo.setObjectName("actionInfo")
         self.actionUndo = QtWidgets.QAction(self)
@@ -97,8 +93,20 @@ class MainWindow(QMainWindow):
         self.actionCopy.setObjectName("actionCopy")
         self.actionPaste = QtWidgets.QAction(self)
         self.actionPaste.setObjectName("actionPaste")
+
+        # draw shape
+        self.actionRectangle = QtWidgets.QAction(self)
+        self.actionRectangle.setObjectName("actionRectangle")
+        self.actionSquare = QtWidgets.QAction(self)
+        self.actionSquare.setObjectName("actionSquare")
+        self.actionTriangle = QtWidgets.QAction(self)
+        self.actionTriangle.setObjectName("actionTriangle")
+        self.actionStar = QtWidgets.QAction(self)
+        self.actionStar.setObjectName("actionStar")
         self.actionCircle = QtWidgets.QAction(self)
         self.actionCircle.setObjectName("actionCircle")
+
+        # tools
         self.actionBrush = QtWidgets.QAction(self)
         self.actionBrush.setObjectName("actionBrush")
         self.actionFill = QtWidgets.QAction(self)
@@ -106,20 +114,15 @@ class MainWindow(QMainWindow):
         self.actionRuber = QtWidgets.QAction(self)
         self.actionRuber.setShortcutContext(QtCore.Qt.WindowShortcut)
         self.actionRuber.setObjectName("actionRuber")
-        self.actionAdd_image = QtWidgets.QAction(self)
-        self.actionAdd_image.setObjectName("actionAdd_image")
+
+        # setup menus
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_as)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionAdd_image)
-        self.menuSize.addAction(self.action1)
-        self.menuSize.addAction(self.action2)
-        self.menuSize.addAction(self.action4)
-        self.menuSize.addAction(self.action8)
-        self.menuSize.addAction(self.action16)
-        self.menuSize.addAction(self.action32)
+        self.menuSize.addAction(self.actionChange)
         self.menuColor.addAction(self.actionBlack)
         self.menuColor.addAction(self.actionRed)
         self.menuColor.addAction(self.actionGreen)
@@ -147,6 +150,8 @@ class MainWindow(QMainWindow):
         self.menubar.addAction(self.menuShape.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
+        self.connect_signal_slot()
+
         self.retranslate_ui(self)
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -172,12 +177,9 @@ class MainWindow(QMainWindow):
         self.actionSquare.setText(_translate("MainWindow", "Square"))
         self.actionTriangle.setText(_translate("MainWindow", "Triangle"))
         self.actionStar.setText(_translate("MainWindow", "Star"))
-        self.action1.setText(_translate("MainWindow", "1"))
-        self.action2.setText(_translate("MainWindow", "2"))
-        self.action4.setText(_translate("MainWindow", "4"))
-        self.action8.setText(_translate("MainWindow", "8"))
-        self.action16.setText(_translate("MainWindow", "16"))
-        self.action32.setText(_translate("MainWindow", "32"))
+
+        self.actionChange.setText(_translate("MainWindow", "Change"))
+
         self.actionBlack.setText(_translate("MainWindow", "Black"))
         self.actionRed.setText(_translate("MainWindow", "Red"))
         self.actionGreen.setText(_translate("MainWindow", "Green"))
@@ -200,8 +202,27 @@ class MainWindow(QMainWindow):
         self.actionFill.setShortcut(_translate("MainWindow", "Ctrl+F"))
         self.actionRuber.setText(_translate("MainWindow", "Ruber"))
         self.actionRuber.setShortcut(_translate("MainWindow", "Ctrl+R"))
-        self.actionAdd_image.setText(_translate("MainWindow", "Add icons"))
+        self.actionAdd_image.setText(_translate("MainWindow", "Add image"))
         self.actionAdd_image.setShortcut(_translate("MainWindow", "Ctrl+I"))
+
+
+    def add_widgets(self):
+        self.pen_size_widget = PenSizeWidget(self)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
+
+    def connect_signal_slot(self):
+        self.menuSize.triggered.connect(self.showChangeSizeDialog)
+
+    def showChangeSizeDialog(self):
+        self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
+        self.pen_size_widget.show()
+
+    def setPenSize(self, value):
+        self.label.pen.setWidth(value)
+
+    def setLabelSize(self, value):
+        self.pen_size_widget.PenSizeLabel.setText(str(value))
 
     def file_save(self):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', '', '*.jpg')
@@ -223,6 +244,7 @@ class MainWindow(QMainWindow):
             self.resize(pixmap.size())
             self.adjustSize()
             file.close()
+
 
 
 
