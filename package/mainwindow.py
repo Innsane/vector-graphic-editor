@@ -13,17 +13,19 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setup_ui()
         self.add_widgets()
-        self.dialogs = list()
 
     def setup_ui(self):
+        # setup main window
         self.setObjectName("MainWindow")
         self.setWindowIcon(QtGui.QIcon('icons/logo.png'))
         self.resize(WIDTH, HEIGHT)
         self.setMouseTracking(True)
 
+        # setup central widget as workspace
         self.label = MyLabel(self)
         self.setCentralWidget(self.label)
 
+        # setup menu bar
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setDefaultUp(False)
@@ -72,7 +74,7 @@ class MainWindow(QMainWindow):
         self.actionYellow = QtWidgets.QAction(self)
         self.actionYellow.setObjectName("actionYellow")
 
-        # edit workspace
+        # edit drawing
         self.actionInfo = QtWidgets.QAction(self)
         self.actionInfo.setObjectName("actionInfo")
         self.actionUndo = QtWidgets.QAction(self)
@@ -107,7 +109,7 @@ class MainWindow(QMainWindow):
         self.actionRuber.setShortcutContext(QtCore.Qt.WindowShortcut)
         self.actionRuber.setObjectName("actionRuber")
 
-        # setup menu
+        # setup menus
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
@@ -142,8 +144,7 @@ class MainWindow(QMainWindow):
         self.menubar.addAction(self.menuShape.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
-        self.menuSize.triggered.connect(self.showChangeSizeDialog)
-
+        self.connect_signal_slot()
 
         self.retranslate_ui(self)
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -203,6 +204,9 @@ class MainWindow(QMainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
 
+    def connect_signal_slot(self):
+        self.menuSize.triggered.connect(self.showChangeSizeDialog)
+
     def showChangeSizeDialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
         self.pen_size_widget.show()
@@ -212,3 +216,5 @@ class MainWindow(QMainWindow):
 
     def setLabelSize(self, value):
         self.pen_size_widget.PenSizeLabel.setText(str(value))
+
+
