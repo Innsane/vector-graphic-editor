@@ -52,8 +52,14 @@ class MainWindow(QMainWindow):
         self.actionNew.setObjectName("actionNew")
         self.actionOpen = QtWidgets.QAction(self)
         self.actionOpen.setObjectName("actionOpen")
+
+        self.actionOpen.triggered.connect(self.file_open)
+
         self.actionSave = QtWidgets.QAction(self)
         self.actionSave.setObjectName("actionSave")
+
+        self.actionSave.triggered.connect(self.file_save)
+
         self.actionSave_as = QtWidgets.QAction(self)
         self.actionSave_as.setObjectName("actionSave_as")
         self.actionAdd_image = QtWidgets.QAction(self)
@@ -199,6 +205,7 @@ class MainWindow(QMainWindow):
         self.actionAdd_image.setText(_translate("MainWindow", "Add image"))
         self.actionAdd_image.setShortcut(_translate("MainWindow", "Ctrl+I"))
 
+
     def add_widgets(self):
         self.pen_size_widget = PenSizeWidget(self)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
@@ -216,5 +223,28 @@ class MainWindow(QMainWindow):
 
     def setLabelSize(self, value):
         self.pen_size_widget.PenSizeLabel.setText(str(value))
+
+    def file_save(self):
+        filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', '', '*.jpg')
+        if filepath[0] == '':
+            return False
+        else:
+            file = open(filepath[0], 'w')
+            self.label.pixmap().save(filepath[0], "JPG")
+            file.close()
+
+    def file_open(self):
+        filepath = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File')
+        if filepath[0] == '':
+            return False
+        else:
+            file = open(filepath[0], 'r')
+            pixmap = QtGui.QPixmap(filepath[0])
+            self.label.setPixmap(pixmap)
+            self.resize(pixmap.size())
+            self.adjustSize()
+            file.close()
+
+
 
 
