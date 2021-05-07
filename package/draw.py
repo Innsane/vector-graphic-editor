@@ -26,6 +26,7 @@ class MyLabel(QLabel):
             return
 
         painter = QtGui.QPainter(self.pixmap())
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
         painter.drawLine(self.last_x, self.last_y, e.x(), e.y()+TOOLBAR_HEIGHT)
         painter.end()
@@ -45,4 +46,4 @@ class MyPen(QPen):
         self.setup()
 
     def setup(self):
-        self.setWidth(3)
+        self.setWidth(4)
