@@ -19,7 +19,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def customize_ui(self):
         self.setObjectName("MainWindow")
-        self.setWindowIcon(QtGui.QIcon('icons/logo.png'))
         self.resize(WIDTH, HEIGHT)
         self.setMouseTracking(True)
 
@@ -28,6 +27,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setCentralWidget(self.label)
 
         self.pen_size_widget = PenSizeWidget(self)
+
+        self.color_picker = QColorDialog(self)
+
 
     def connect_actions(self):
         self.actionOpen.triggered.connect(self.file_open)
@@ -38,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
 
     def showColorPicker(self):
-        color = QColorDialog.getColor()
+        color = self.color_picker.getColor()
         if color.isValid():
             self.setPenColor(color)
 
