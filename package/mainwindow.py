@@ -36,16 +36,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
 
+    @QtCore.pyqtSlot()
     def showChangeSizeDialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
         self.pen_size_widget.show()
 
+    @QtCore.pyqtSlot()
     def setPenSize(self, value):
         self.label.pen.setWidth(value)
 
+    @QtCore.pyqtSlot()
     def setLabelSize(self, value):
         self.pen_size_widget.PenSizeLabel.setText(str(value))
 
+    @QtCore.pyqtSlot()
     def file_save(self):
         filepath = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', '', '*.jpg')
         if filepath[0] == '':
@@ -55,6 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.pixmap().save(filepath[0], "JPG")
             file.close()
 
+    @QtCore.pyqtSlot()
     def file_open(self):
         filepath = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File')
         if filepath[0] == '':
