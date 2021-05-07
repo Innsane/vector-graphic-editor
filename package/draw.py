@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QLabel, QMainWindow
 
 TOOLBAR_HEIGHT = 21
 
+
 class MyLabel(QLabel):
     def __init__(self, parent: QMainWindow):
         super().__init__(parent)
@@ -24,7 +25,7 @@ class MyLabel(QLabel):
             self.last_x = e.x()
             self.last_y = e.y()+TOOLBAR_HEIGHT
             return
-
+        print(self.last_x)
         painter = QtGui.QPainter(self.pixmap())
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
