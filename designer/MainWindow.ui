@@ -50,26 +50,19 @@
     <property name="title">
      <string>Size</string>
     </property>
-    <addaction name="action1"/>
-    <addaction name="action2"/>
-    <addaction name="action4"/>
-    <addaction name="action8"/>
-    <addaction name="action16"/>
-    <addaction name="action32"/>
+    <addaction name="actionChangeSize"/>
    </widget>
    <widget class="QMenu" name="menuColor">
     <property name="title">
      <string>Color</string>
     </property>
-    <addaction name="actionBlack"/>
-    <addaction name="actionRed"/>
-    <addaction name="actionGreen"/>
-    <addaction name="actionYellow"/>
+    <addaction name="actionChangeColor"/>
    </widget>
    <widget class="QMenu" name="menuShape">
     <property name="title">
      <string>Shapes</string>
     </property>
+    <addaction name="actionLine"/>
     <addaction name="actionCircle"/>
     <addaction name="actionSquare"/>
     <addaction name="actionRectangle"/>
@@ -162,9 +155,12 @@
     <string>Star</string>
    </property>
   </action>
-  <action name="action1">
+  <action name="actionChangeSize">
    <property name="text">
-    <string>1</string>
+    <string>Change</string>
+   </property>
+   <property name="toolTip">
+    <string>Change size of brush</string>
    </property>
   </action>
   <action name="action2">
@@ -192,9 +188,9 @@
     <string>32</string>
    </property>
   </action>
-  <action name="actionBlack">
+  <action name="actionChange_2">
    <property name="text">
-    <string>Black</string>
+    <string>Change</string>
    </property>
   </action>
   <action name="actionRed">
@@ -295,6 +291,19 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionChangeColor">
+   <property name="text">
+    <string>Change</string>
+   </property>
+   <property name="toolTip">
+    <string>Change color of brush</string>
+   </property>
+  </action>
+  <action name="actionLine">
+   <property name="text">
+    <string>Line</string>
    </property>
   </action>
  </widget>

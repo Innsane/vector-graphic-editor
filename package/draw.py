@@ -2,6 +2,7 @@ from PyQt5 import QtGui, Qt
 from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
+TOOLBAR_HEIGHT = 21
 
 class MyLabel(QLabel):
     def __init__(self, parent: QMainWindow):
@@ -21,17 +22,18 @@ class MyLabel(QLabel):
     def mouseMoveEvent(self, e):
         if self.last_x is None:  # First event.
             self.last_x = e.x()
-            self.last_y = e.y()
+            self.last_y = e.y()+TOOLBAR_HEIGHT
             return
 
         painter = QtGui.QPainter(self.pixmap())
+        painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
-        painter.drawLine(self.last_x, self.last_y, e.x(), e.y())
+        painter.drawLine(self.last_x, self.last_y, e.x(), e.y()+TOOLBAR_HEIGHT)
         painter.end()
         self.update()
 
         self.last_x = e.x()
-        self.last_y = e.y()
+        self.last_y = e.y()+TOOLBAR_HEIGHT
 
     def mouseReleaseEvent(self, e):
         self.last_x = None
@@ -44,4 +46,4 @@ class MyPen(QPen):
         self.setup()
 
     def setup(self):
-        self.setWidth(3)
+        self.setWidth(2)
