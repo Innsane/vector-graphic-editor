@@ -46,4 +46,4 @@ class MyPen(QPen):
         self.setup()
 
     def setup(self):
-        self.setWidth(4)
+        self.setWidth(2)

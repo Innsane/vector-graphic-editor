@@ -15,7 +15,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self.customize_ui()
-        self.add_widgets()
+        self.connect_actions()
 
     def customize_ui(self):
         self.setObjectName("MainWindow")
@@ -23,23 +23,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resize(WIDTH, HEIGHT)
         self.setMouseTracking(True)
 
-        # setup central widget as workspace
+        # add Label with Pixmap as workspace to draw on
         self.label = MyLabel(self)
         self.setCentralWidget(self.label)
 
-        # actions
+        self.pen_size_widget = PenSizeWidget(self)
+
+    def connect_actions(self):
         self.actionOpen.triggered.connect(self.file_open)
         self.actionSave.triggered.connect(self.file_save)
-        self.connect_signal_slot()
-
-
-    def add_widgets(self):
-        self.pen_size_widget = PenSizeWidget(self)
+        self.menuSize.triggered.connect(self.showChangeSizeDialog)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
-
-    def connect_signal_slot(self):
-        self.menuSize.triggered.connect(self.showChangeSizeDialog)
 
     def showChangeSizeDialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())

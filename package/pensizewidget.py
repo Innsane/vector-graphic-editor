@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow
 
 from designer.ChangePenSizeWidget import Ui_ChangeSizeWidget
+import package.draw as draw
 
 
 class PenSizeWidget(QMainWindow, Ui_ChangeSizeWidget):
@@ -12,3 +13,5 @@ class PenSizeWidget(QMainWindow, Ui_ChangeSizeWidget):
     def custom_setup(self):
         self.PenSizeScroll.setMinimum(1)
         self.PenSizeScroll.setMaximum(50)
+        self.PenSizeScroll.setValue(draw.MyPen().width())
+        self.PenSizeLabel.setText(str(draw.MyPen().width()))
