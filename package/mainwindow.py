@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
 from package.draw import MyLabel
 from package.pensizewidget import PenSizeWidget
@@ -33,8 +33,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionOpen.triggered.connect(self.file_open)
         self.actionSave.triggered.connect(self.file_save)
         self.menuSize.triggered.connect(self.showChangeSizeDialog)
+        self.menuColor.triggered.connect(self.showColorPicker)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
+
+    def showColorPicker(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.setPenColor(color)
+
+    def setPenColor(self, color):
+        self.label.pen.setColor(color)
 
     def showChangeSizeDialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
