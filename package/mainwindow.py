@@ -134,7 +134,13 @@ class MainWindow(QMainWindow):
         self.menuShape.addAction(self.actionStar)
         self.menuHelp.addAction(self.actionInfo)
         self.menuEdit.addAction(self.actionUndo)
+
+        self.actionUndo.triggered.connect(self.undo_function)
+
         self.menuEdit.addAction(self.actionRedo)
+
+        self.actionRedo.triggered.connect(self.redo_function)
+
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionCut)
         self.menuEdit.addAction(self.actionCopy)
@@ -243,7 +249,19 @@ class MainWindow(QMainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
+
+
+            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo update
+            self.label.old_pixmap = self.label.pixmap().copy()
+
             file.close()
+
+    def undo_function(self):
+        self.label.undo()
+
+    def redo_function(self):
+        self.label.redo()
+
 
 
 
