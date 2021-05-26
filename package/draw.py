@@ -11,7 +11,6 @@ class MyLabel(QLabel):
         self.old_pixmap = self.pixmap().copy()
         self.canvasList = []
         self.redoList = []
-        # self.undocounter
 
     def setup(self):
         self.setStyleSheet("background-color: lightgreen")
@@ -40,6 +39,7 @@ class MyLabel(QLabel):
     def mouseReleaseEvent(self, e):
         self.canvasList.append(self.old_pixmap)
         self.old_pixmap = self.pixmap().copy()
+        self.redoList.clear()
         self.last_x = None
         self.last_y = None
 
@@ -56,7 +56,6 @@ class MyLabel(QLabel):
     def redo(self):
         if self.redoList:
             if len(self.redoList) > 0:
-                # self.old_pixmap = self.pixmap().copy() not used
                 self.canvasList.append(self.old_pixmap)
                 it = self.redoList.pop()
                 self.old_pixmap = it

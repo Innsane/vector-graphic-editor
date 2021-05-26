@@ -249,10 +249,9 @@ class MainWindow(QMainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
-
-
-            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo update
+            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo up
             self.label.old_pixmap = self.label.pixmap().copy()
+            self.label.redoList.clear()
 
             file.close()
 
