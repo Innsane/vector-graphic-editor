@@ -38,6 +38,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menuColor.triggered.connect(self.showColorPicker)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
+        self.actionUndo.triggered.connect(self.undo_function)
+        self.actionRedo.triggered.connect(self.redo_function)
+
 
     def showColorPicker(self):
         color = self.color_picker.getColor()
@@ -76,4 +79,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
+            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo up
+            self.label.old_pixmap = self.label.pixmap().copy()
+            self.label.redoList.clear()
             file.close()
+
+
+    def undo_function(self):
+        self.label.undo()
+
+    def redo_function(self):
+        self.label.redo()
