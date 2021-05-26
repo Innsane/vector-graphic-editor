@@ -10,9 +10,6 @@ class MyLabel(QLabel):
         super().__init__(parent)
         self.setup()
         self.last_x, self.last_y = None, None
-        self.old_pixmap = self.pixmap().copy()
-        self.canvasList = []
-        self.redoList = []
 
     def setup(self):
         self.setStyleSheet("background-color: lightgreen")
@@ -21,6 +18,7 @@ class MyLabel(QLabel):
         canvas.fill(QColor('#ffffff'))
         self.setPixmap(canvas)
         self.pen = MyPen()
+
 
     def mouseMoveEvent(self, e):
         if self.last_x is None:  # First event.
@@ -32,38 +30,14 @@ class MyLabel(QLabel):
         painter.setPen(self.pen)
         painter.drawLine(self.last_x, self.last_y, e.x(), e.y()+TOOLBAR_HEIGHT)
         painter.end()
-
         self.update()
 
         self.last_x = e.x()
         self.last_y = e.y()+TOOLBAR_HEIGHT
 
     def mouseReleaseEvent(self, e):
-        self.canvasList.append(self.old_pixmap)
-        self.old_pixmap = self.pixmap().copy()
-        self.redoList.clear()
         self.last_x = None
         self.last_y = None
-
-    def undo(self):
-        if self.canvasList:
-            if len(self.canvasList) > 0:
-                self.redoList.append(self.old_pixmap)
-                it = self.canvasList.pop()
-                self.old_pixmap = it
-                print(f'UNDO TEST  it {it} lenght of canvas list is:{len(self.canvasList)}')
-                self.setPixmap(it)
-                self.update()
-
-    def redo(self):
-        if self.redoList:
-            if len(self.redoList) > 0:
-                self.canvasList.append(self.old_pixmap)
-                it = self.redoList.pop()
-                self.old_pixmap = it
-                print(f'REDO TEST  it {it} lenght of canvas list is:{len(self.redoList)}')
-                self.setPixmap(it)
-                self.update()
 
 
 class MyPen(QPen):
