@@ -1,40 +1,65 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QMainWindow, QColorDialog
+from PyQt5.QtWidgets import QMainWindow
 
 from package.draw import MyLabel
 from package.pensizewidget import PenSizeWidget
-
-from designer.MainWindow import Ui_MainWindow
 
 WIDTH = 1000
 HEIGHT = 700
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, *args, obj=None, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
-        self.setupUi(self)
-        self.customize_ui()
-        self.connect_actions()
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setup_ui()
+        self.add_widgets()
 
-    def customize_ui(self):
+    def setup_ui(self):
+        # setup main window
         self.setObjectName("MainWindow")
+        self.setWindowIcon(QtGui.QIcon('icons/logo.png'))
         self.resize(WIDTH, HEIGHT)
         self.setMouseTracking(True)
 
-        # add Label with Pixmap as workspace to draw on
+        # setup central widget as workspace
         self.label = MyLabel(self)
         self.setCentralWidget(self.label)
 
-        self.pen_size_widget = PenSizeWidget(self)
 
-        self.color_picker = QColorDialog(self)
+        # setup menu bar
+        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
+        self.menubar.setDefaultUp(False)
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuSize = QtWidgets.QMenu(self.menubar)
+        self.menuSize.setObjectName("menuSize")
+        self.menuColor = QtWidgets.QMenu(self.menubar)
+        self.menuColor.setObjectName("menuColor")
+        self.menuShape = QtWidgets.QMenu(self.menubar)
+        self.menuShape.setObjectName("menuShape")
+        self.menuHelp = QtWidgets.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
+        self.menuEdit = QtWidgets.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuTools = QtWidgets.QMenu(self.menubar)
+        self.menuTools.setObjectName("menuTools")
+        self.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        self.setStatusBar(self.statusbar)
+        self.actionNew = QtWidgets.QAction(self)
+        self.actionNew.setObjectName("actionNew")
+        self.actionOpen = QtWidgets.QAction(self)
+        self.actionOpen.setObjectName("actionOpen")
 
-
-    def connect_actions(self):
         self.actionOpen.triggered.connect(self.file_open)
-        self.actionSave.triggered.connect(self.file_save)
 
+        self.actionSave = QtWidgets.QAction(self)
+        self.actionSave.setObjectName("actionSave")
+
+        self.actionSave.triggered.connect(self.file_save)
 
         self.actionSave_as = QtWidgets.QAction(self)
         self.actionSave_as.setObjectName("actionSave_as")
@@ -110,13 +135,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menuShape.addAction(self.actionStar)
         self.menuHelp.addAction(self.actionInfo)
         self.menuEdit.addAction(self.actionUndo)
-
-        self.actionUndo.triggered.connect(self.undo_function)
-
         self.menuEdit.addAction(self.actionRedo)
-
-        self.actionRedo.triggered.connect(self.redo_function)
-
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionCut)
         self.menuEdit.addAction(self.actionCopy)
@@ -190,20 +209,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_widgets(self):
         self.pen_size_widget = PenSizeWidget(self)
-
-        self.menuSize.triggered.connect(self.showChangeSizeDialog)
-        self.menuColor.triggered.connect(self.showColorPicker)
-
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
 
-    def showColorPicker(self):
-        color = self.color_picker.getColor()
-        if color.isValid():
-            self.setPenColor(color)
-
-    def setPenColor(self, color):
-        self.label.pen.setColor(color)
+    def connect_signal_slot(self):
+        self.menuSize.triggered.connect(self.showChangeSizeDialog)
 
     def showChangeSizeDialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
@@ -234,15 +244,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
-            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo up
-            self.label.old_pixmap = self.label.pixmap().copy()
-            self.label.redoList.clear()
-
             file.close()
 
 
-    def undo_function(self):
-        self.label.undo()
 
-    def redo_function(self):
-        self.label.redo()
+
