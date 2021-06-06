@@ -1,10 +1,9 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
+from designer.MainWindow import Ui_MainWindow
 from package.draw import MyLabel
 from package.pensizewidget import PenSizeWidget
-
-from designer.MainWindow import Ui_MainWindow
 
 WIDTH = 1000
 HEIGHT = 700
@@ -30,14 +29,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.color_picker = QColorDialog(self)
 
-
     def connect_actions(self):
         self.actionOpen.triggered.connect(self.file_open)
         self.actionSave.triggered.connect(self.file_save)
         self.menuSize.triggered.connect(self.showChangeSizeDialog)
         self.menuColor.triggered.connect(self.showColorPicker)
+        self.actionRuber.triggered.connect(self.changeErase)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
+
+    def changeErase(self):
+        self.label._do_erase = True
+        print(self.label._do_erase)
 
     def showColorPicker(self):
         color = self.color_picker.getColor()
