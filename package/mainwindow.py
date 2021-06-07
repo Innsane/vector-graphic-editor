@@ -103,27 +103,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def change_shape(self, shape):
         self.label.shape = shape
-        # if shape == Shapes.LINE:
-        #     self.label.line = True
-        #     self.label.ellipse = False
-        # elif shape == Shapes.CIRCLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.ELLIPSE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.SQUARE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.RECTANGLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.TRIANGLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.STAR:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # else:
-        #     self.label.line = True
 

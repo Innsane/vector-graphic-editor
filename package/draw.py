@@ -5,9 +5,17 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QColor, QPen, QPainterPath
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
-from package.draw_shape import DrawShape, Shapes
-
 TOOLBAR_HEIGHT = 21
+
+
+class Shapes(Enum):
+    LINE = 'line'
+    CIRCLE = 'circle'
+    ELLIPSE = 'ellipse'
+    SQUARE = 'square'
+    RECTANGLE = 'rectangle'
+    TRIANGLE = 'triangle'
+    STAR = 'star'
 
 
 class MyLabel(QLabel):
@@ -83,32 +91,7 @@ class MyLabel(QLabel):
         painter.drawRect(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
         painter.end()
 
-
     def mouseMoveEvent(self, e):
-        # switch on shape
-        # if shape == Shapes.LINE:
-        #     self.label.line = True
-        #     self.label.ellipse = False
-        # elif shape == Shapes.CIRCLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.ELLIPSE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.SQUARE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.RECTANGLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.TRIANGLE:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # elif shape == Shapes.STAR:
-        #     self.label.line = False
-        #     self.label.ellipse = True
-        # else:
-        #     self.label.line = True
         if self.last_x is None:  # First event.
             self.last_x = e.x()
             self.last_y = e.y()+TOOLBAR_HEIGHT
@@ -147,7 +130,6 @@ class MyLabel(QLabel):
                 self.draw_star(e)
 
         self.update()
-
 
     def mouseReleaseEvent(self, e):
         self.shape_canvas_list = [self.pixmap()]
