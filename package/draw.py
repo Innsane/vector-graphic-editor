@@ -1,7 +1,8 @@
 from enum import Enum
 
 from PyQt5 import QtGui, Qt
-from PyQt5.QtGui import QColor, QPen
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import QColor, QPen, QPainterPath
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
 from package.draw_shape import DrawShape, Shapes
@@ -28,21 +29,22 @@ class MyLabel(QLabel):
         self.setPixmap(canvas)
         self.pen = MyPen()
 
-    def draw_ellipse(self, e):
+    def setup_painter(self) -> QtGui.QPainter:
         painter = QtGui.QPainter(self.pixmap())
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
+        return painter
+
+    def draw_ellipse(self, e):
+        painter = self.setup_painter()
         painter.drawEllipse(self.last_x, self.last_y, e.x()-self.last_x, e.y()+TOOLBAR_HEIGHT-self.last_y)
         painter.end()
-        self.update()
 
     def draw_circle(self, e):
         painter = QtGui.QPainter(self.pixmap())
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
         painter.drawEllipse(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
-        painter.end()
-        self.update()
 
     def draw_rectangle(self, e):
         painter = QtGui.QPainter(self.pixmap())
@@ -50,7 +52,6 @@ class MyLabel(QLabel):
         painter.setPen(self.pen)
         painter.drawRect(self.last_x, self.last_y, e.x()-self.last_x, e.y()+TOOLBAR_HEIGHT-self.last_y)
         painter.end()
-        self.update()
 
     def draw_square(self, e):
         painter = QtGui.QPainter(self.pixmap())
@@ -58,15 +59,22 @@ class MyLabel(QLabel):
         painter.setPen(self.pen)
         painter.drawRect(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
         painter.end()
-        self.update()
 
     def draw_triangle(self, e):
         painter = QtGui.QPainter(self.pixmap())
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
-        painter.drawRect(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
+
+        rect = QRectF(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
+        path = QPainterPath()
+
+        path.moveTo(rect.left() + (rect.width() / 2), rect.top())
+        path.lineTo(rect.bottomLeft())
+        path.lineTo(rect.bottomRight())
+        path.lineTo(rect.left() + (rect.width() / 2), rect.top())
+
+        painter.drawPath(path)
         painter.end()
-        self.update()
 
     def draw_star(self, e):
         painter = QtGui.QPainter(self.pixmap())
@@ -74,7 +82,7 @@ class MyLabel(QLabel):
         painter.setPen(self.pen)
         painter.drawRect(self.last_x, self.last_y, e.x()-self.last_x, e.x()-self.last_x)
         painter.end()
-        self.update()
+
 
     def mouseMoveEvent(self, e):
         # switch on shape
@@ -116,7 +124,6 @@ class MyLabel(QLabel):
             self.last_y = e.y() + TOOLBAR_HEIGHT
 
             painter.end()
-            self.update()
 
         else:
             self.setPixmap(self.shape_canvas_list.pop())
@@ -139,6 +146,7 @@ class MyLabel(QLabel):
             elif self.shape == Shapes.STAR:
                 self.draw_star(e)
 
+        self.update()
 
 
     def mouseReleaseEvent(self, e):
