@@ -1,3 +1,5 @@
+import os
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
@@ -5,6 +7,12 @@ from package.draw import MyLabel
 from package.pensizewidget import PenSizeWidget
 
 from designer.MainWindow import Ui_MainWindow
+
+from package.convertToSVG import SVGConverter
+
+
+from svgtrace import trace
+from pathlib import Path
 
 WIDTH = 1000
 HEIGHT = 700
@@ -66,8 +74,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return False
         else:
             file = open(filepath[0], 'w')
+            # print(filepath[0])
             self.label.pixmap().save(filepath[0], "JPG")
             file.close()
+            directiory = os.path.dirname(filepath[0])
+            filename_with_ext = os.path.basename(filepath[0])
+            filename1 = os.path.splitext(filename_with_ext)[0]
+            svg_dealer = SVGConverter(filepath[0], directiory, filename1)
+            svg_dealer.convertToSVG()
 
     def file_open(self):
         filepath = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File')
@@ -84,9 +98,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.redoList.clear()
             file.close()
 
-
     def undo_function(self):
         self.label.undo()
 
     def redo_function(self):
         self.label.redo()
+
+
+
+
