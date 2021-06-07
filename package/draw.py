@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, Qt
+from PyQt5 import QtGui
 from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
@@ -15,7 +15,7 @@ class MyLabel(QLabel):
         self.redoList = []
 
     def setup(self):
-        self.setStyleSheet("background-color: lightgreen")
+        self.setStyleSheet("background-color: white")
         self.setGeometry(0, 0, self.parent().width(), self.parent().height())
         canvas = QtGui.QPixmap(self.width(), self.height())
         canvas.fill(QColor('#ffffff'))
