@@ -45,7 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionRedo.triggered.connect(self.redo_function)
         self.actionLine.triggered.connect(lambda: self.change_shape(Shapes.LINE))
         self.actionCircle.triggered.connect(lambda: self.change_shape(Shapes.CIRCLE))
-        # self.actionEllipse.triggered.connect(lambda: self.change_shape(Shapes.ELLIPSE))
+        self.actionEllipse.triggered.connect(lambda: self.change_shape(Shapes.ELLIPSE))
         self.actionSquare.triggered.connect(lambda: self.change_shape(Shapes.SQUARE))
         self.actionRectangle.triggered.connect(lambda: self.change_shape(Shapes.RECTANGLE))
         self.actionTriangle.triggered.connect(lambda: self.change_shape(Shapes.TRIANGLE))
@@ -93,7 +93,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.old_pixmap = self.label.pixmap().copy()
             self.label.redoList.clear()
             file.close()
-
 
     def undo_function(self):
         self.label.undo()
