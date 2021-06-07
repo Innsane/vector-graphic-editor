@@ -3,6 +3,7 @@ from enum import Enum
 from PyQt5 import QtGui, Qt
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QColor, QPen, QPainterPath
+
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
 TOOLBAR_HEIGHT = 21
