@@ -3,6 +3,7 @@ from enum import Enum
 from PyQt5 import QtGui, Qt
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QColor, QPen, QPainterPath
+
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
 TOOLBAR_HEIGHT = 21
@@ -30,7 +31,7 @@ class MyLabel(QLabel):
         self.shape = Shapes.LINE
 
     def setup(self):
-        self.setStyleSheet("background-color: lightgreen")
+        self.setStyleSheet("background-color: white")
         self.setGeometry(0, 0, self.parent().width(), self.parent().height())
         canvas = QtGui.QPixmap(self.width(), self.height())
         canvas.fill(QColor('#ffffff'))
