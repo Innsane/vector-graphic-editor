@@ -4,23 +4,13 @@ from re import match
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
-from package.draw import MyLabel
+from package.draw import MyLabel, Shapes
 from package.pensizewidget import PenSizeWidget
 
 from designer.MainWindow import Ui_MainWindow
 
 WIDTH = 1000
 HEIGHT = 700
-
-
-class Shapes(Enum):
-    LINE = 'line'
-    CIRCLE = 'circle'
-    ELLIPSE = 'ellipse'
-    SQUARE = 'square'
-    RECTANGLE = 'rectangle'
-    TRIANGLE = 'triangle'
-    STAR = 'star'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -53,13 +43,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
-        self.actionLine.triggered.connect(lambda: self.change_shape('line'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('circle'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('ellipse'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('square'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('rectangle'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('triangle'))
-        self.actionCircle.triggered.connect(lambda: self.change_shape('star'))
+        self.actionLine.triggered.connect(lambda: self.change_shape(Shapes.LINE))
+        self.actionCircle.triggered.connect(lambda: self.change_shape(Shapes.CIRCLE))
+        # self.actionEllipse.triggered.connect(lambda: self.change_shape(Shapes.ELLIPSE))
+        self.actionSquare.triggered.connect(lambda: self.change_shape(Shapes.SQUARE))
+        self.actionRectangle.triggered.connect(lambda: self.change_shape(Shapes.RECTANGLE))
+        self.actionTriangle.triggered.connect(lambda: self.change_shape(Shapes.TRIANGLE))
+        self.actionStar.triggered.connect(lambda: self.change_shape(Shapes.STAR))
 
 
     def showColorPicker(self):
@@ -112,27 +102,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label.redo()
 
     def change_shape(self, shape):
-        if shape == Shapes.LINE:
-            self.label.line = True
-            self.label.ellipse = False
-        elif shape == Shapes.CIRCLE:
-            self.label.line = False
-            self.label.ellipse = True
-        elif shape == Shapes.ELLIPSE:
-            self.label.line = False
-            self.label.ellipse = True
-        elif shape == Shapes.SQUARE:
-            self.label.line = False
-            self.label.ellipse = True
-        elif shape == Shapes.RECTANGLE:
-            self.label.line = False
-            self.label.ellipse = True
-        elif shape == Shapes.TRIANGLE:
-            self.label.line = False
-            self.label.ellipse = True
-        elif shape == Shapes.STAR:
-            self.label.line = False
-            self.label.ellipse = True
-        else:
-            self.label.line = True
+        self.label.shape = shape
+        # if shape == Shapes.LINE:
+        #     self.label.line = True
+        #     self.label.ellipse = False
+        # elif shape == Shapes.CIRCLE:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # elif shape == Shapes.ELLIPSE:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # elif shape == Shapes.SQUARE:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # elif shape == Shapes.RECTANGLE:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # elif shape == Shapes.TRIANGLE:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # elif shape == Shapes.STAR:
+        #     self.label.line = False
+        #     self.label.ellipse = True
+        # else:
+        #     self.label.line = True
 
