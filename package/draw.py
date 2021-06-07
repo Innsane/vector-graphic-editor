@@ -14,8 +14,7 @@ class MyLabel(QLabel):
         self.undoList = []
         self.redoList = []
         self.ellipse = True
-
-
+        self.ellipse = False
 
     def setup(self):
         self.setStyleSheet("background-color: lightgreen")
@@ -29,11 +28,7 @@ class MyLabel(QLabel):
     def draw_ellipse(self, e):
         self.setPixmap(self.ellipse_canvas_list.pop())
         self.ellipse_canvas_list.append(self.pixmap().copy())
-        print(f"last x: {self.last_x}")
-        print(f"last y: {self.last_y}")
-        print(f"e.x: {e.x()}")
-        print(f"e.y: {e.y()}")
-        print(len(self.ellipse_canvas_list))
+        print(f"ellipse canvas list: {len(self.ellipse_canvas_list)}")
         painter = QtGui.QPainter(self.pixmap())
         painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
         painter.setPen(self.pen)
@@ -61,6 +56,9 @@ class MyLabel(QLabel):
             self.last_y = e.y()+TOOLBAR_HEIGHT
 
     def mouseReleaseEvent(self, e):
+        if self.ellipse:
+            self.ellipse_canvas_list = [self.pixmap()]
+
         self.undoList.append(self.old_pixmap)
         self.old_pixmap = self.pixmap().copy()
         self.redoList.clear()

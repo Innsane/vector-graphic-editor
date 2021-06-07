@@ -40,6 +40,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
+        self.actionLine.triggered.connect(self.change_shape)
+        self.actionCircle.triggered.connect(self.change_shape)
 
 
     def showColorPicker(self):
@@ -90,3 +92,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def redo_function(self):
         self.label.redo()
+
+    def change_shape(self, shape):
+        if shape == 'line':
+            self.label.line = True
+        elif shape == 'circle':
+            self.label.ellipse = True
+
