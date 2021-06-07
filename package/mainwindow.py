@@ -1,3 +1,6 @@
+from enum import Enum
+from re import match
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
@@ -8,6 +11,16 @@ from designer.MainWindow import Ui_MainWindow
 
 WIDTH = 1000
 HEIGHT = 700
+
+
+class Shapes(Enum):
+    LINE = 'line'
+    CIRCLE = 'circle'
+    ELLIPSE = 'ellipse'
+    SQUARE = 'square'
+    RECTANGLE = 'rectangle'
+    TRIANGLE = 'triangle'
+    STAR = 'star'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -42,6 +55,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionRedo.triggered.connect(self.redo_function)
         self.actionLine.triggered.connect(lambda: self.change_shape('line'))
         self.actionCircle.triggered.connect(lambda: self.change_shape('circle'))
+        self.actionCircle.triggered.connect(lambda: self.change_shape('ellipse'))
+        self.actionCircle.triggered.connect(lambda: self.change_shape('square'))
+        self.actionCircle.triggered.connect(lambda: self.change_shape('rectangle'))
+        self.actionCircle.triggered.connect(lambda: self.change_shape('triangle'))
+        self.actionCircle.triggered.connect(lambda: self.change_shape('star'))
 
 
     def showColorPicker(self):
@@ -94,10 +112,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label.redo()
 
     def change_shape(self, shape):
-        if shape == 'line':
+        if shape == Shapes.LINE:
             self.label.line = True
             self.label.ellipse = False
-        elif shape == 'circle':
+        elif shape == Shapes.CIRCLE:
             self.label.line = False
             self.label.ellipse = True
+        elif shape == Shapes.ELLIPSE:
+            self.label.line = False
+            self.label.ellipse = True
+        elif shape == Shapes.SQUARE:
+            self.label.line = False
+            self.label.ellipse = True
+        elif shape == Shapes.RECTANGLE:
+            self.label.line = False
+            self.label.ellipse = True
+        elif shape == Shapes.TRIANGLE:
+            self.label.line = False
+            self.label.ellipse = True
+        elif shape == Shapes.STAR:
+            self.label.line = False
+            self.label.ellipse = True
+        else:
+            self.label.line = True
 
