@@ -43,8 +43,6 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
-    <addaction name="actionAdd_image"/>
    </widget>
    <widget class="QMenu" name="menuSize">
     <property name="title">
@@ -64,6 +62,7 @@
     </property>
     <addaction name="actionLine"/>
     <addaction name="actionCircle"/>
+    <addaction name="actionEllipse"/>
     <addaction name="actionSquare"/>
     <addaction name="actionRectangle"/>
     <addaction name="actionTriangle"/>
@@ -136,21 +135,33 @@
    </property>
   </action>
   <action name="actionRectangle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Rectangle</string>
    </property>
   </action>
   <action name="actionSquare">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Square</string>
    </property>
   </action>
   <action name="actionTriangle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Triangle</string>
    </property>
   </action>
   <action name="actionStar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Star</string>
    </property>
@@ -254,6 +265,9 @@
    </property>
   </action>
   <action name="actionCircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Circle</string>
    </property>
@@ -302,8 +316,22 @@
    </property>
   </action>
   <action name="actionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Line</string>
+   </property>
+  </action>
+  <action name="actionEllipse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ellipse</string>
    </property>
   </action>
  </widget>

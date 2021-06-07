@@ -1,7 +1,10 @@
+from enum import Enum
+from re import match
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
-from package.draw import MyLabel
+from package.draw import MyLabel, Shapes
 from package.pensizewidget import PenSizeWidget
 
 from designer.MainWindow import Ui_MainWindow
@@ -39,6 +42,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.set_label_size)
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
+        self.actionLine.triggered.connect(lambda: self.change_shape(Shapes.LINE))
+        self.actionCircle.triggered.connect(lambda: self.change_shape(Shapes.CIRCLE))
+        self.actionEllipse.triggered.connect(lambda: self.change_shape(Shapes.ELLIPSE))
+        self.actionSquare.triggered.connect(lambda: self.change_shape(Shapes.SQUARE))
+        self.actionRectangle.triggered.connect(lambda: self.change_shape(Shapes.RECTANGLE))
+        self.actionTriangle.triggered.connect(lambda: self.change_shape(Shapes.TRIANGLE))
+        self.actionStar.triggered.connect(lambda: self.change_shape(Shapes.STAR))
 
     def show_color_picker(self):
         color = self.color_picker.getColor()
@@ -77,7 +87,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
-            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo up
+            self.label.undoList.append(self.label.old_pixmap)  #redo and undo up
             self.label.old_pixmap = self.label.pixmap().copy()
             self.label.redoList.clear()
             file.close()
@@ -87,3 +97,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def redo_function(self):
         self.label.redo()
+
+    def change_shape(self, shape):
+        self.label.shape = shape
+
