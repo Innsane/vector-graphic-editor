@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, Qt
+from PyQt5 import QtGui
 from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QLabel, QMainWindow
 
