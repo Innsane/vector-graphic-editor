@@ -1,9 +1,11 @@
 import os
+from enum import Enum
+from re import match
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow, QColorDialog
 
-from package.draw import MyLabel
+from package.draw import MyLabel, Shapes
 from package.pensizewidget import PenSizeWidget
 
 from designer.MainWindow import Ui_MainWindow
@@ -38,34 +40,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.color_picker = QColorDialog(self)
 
-
     def connect_actions(self):
         self.actionOpen.triggered.connect(self.file_open)
         self.actionSave.triggered.connect(self.file_save)
-        self.menuSize.triggered.connect(self.showChangeSizeDialog)
-        self.menuColor.triggered.connect(self.showColorPicker)
-        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setPenSize)
-        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.setLabelSize)
+        self.menuSize.triggered.connect(self.show_change_size_dialog)
+        self.menuColor.triggered.connect(self.show_color_picker)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.set_pen_size)
+        self.pen_size_widget.PenSizeScroll.valueChanged.connect(self.set_label_size)
         self.actionUndo.triggered.connect(self.undo_function)
         self.actionRedo.triggered.connect(self.redo_function)
+        self.actionLine.triggered.connect(lambda: self.change_shape(Shapes.LINE))
+        self.actionCircle.triggered.connect(lambda: self.change_shape(Shapes.CIRCLE))
+        self.actionEllipse.triggered.connect(lambda: self.change_shape(Shapes.ELLIPSE))
+        self.actionSquare.triggered.connect(lambda: self.change_shape(Shapes.SQUARE))
+        self.actionRectangle.triggered.connect(lambda: self.change_shape(Shapes.RECTANGLE))
+        self.actionTriangle.triggered.connect(lambda: self.change_shape(Shapes.TRIANGLE))
+        self.actionStar.triggered.connect(lambda: self.change_shape(Shapes.STAR))
 
-
-    def showColorPicker(self):
+    def show_color_picker(self):
         color = self.color_picker.getColor()
         if color.isValid():
-            self.setPenColor(color)
+            self.set_pen_color(color)
 
-    def setPenColor(self, color):
+    def set_pen_color(self, color):
         self.label.pen.setColor(color)
 
-    def showChangeSizeDialog(self):
+    def show_change_size_dialog(self):
         self.pen_size_widget.move(self.menuSize.x(), self.menuSize.y())
         self.pen_size_widget.show()
 
-    def setPenSize(self, value):
+    def set_pen_size(self, value):
         self.label.pen.setWidth(value)
 
-    def setLabelSize(self, value):
+    def set_label_size(self, value):
         self.pen_size_widget.PenSizeLabel.setText(str(value))
 
     def file_save(self):
@@ -93,7 +100,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
-            self.label.canvasList.append(self.label.old_pixmap)  #redo and undo up
+            self.label.undoList.append(self.label.old_pixmap)  #redo and undo up
             self.label.old_pixmap = self.label.pixmap().copy()
             self.label.redoList.clear()
             file.close()
@@ -104,6 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def redo_function(self):
         self.label.redo()
 
-
+    def change_shape(self, shape):
+        self.label.shape = shape
 
 
