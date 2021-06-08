@@ -55,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionSquare.triggered.connect(lambda: self.change_shape(Shapes.SQUARE))
         self.actionRectangle.triggered.connect(lambda: self.change_shape(Shapes.RECTANGLE))
         self.actionTriangle.triggered.connect(lambda: self.change_shape(Shapes.TRIANGLE))
-        self.actionStar.triggered.connect(lambda: self.change_shape(Shapes.STAR))
+        # self.actionStar.triggered.connect(lambda: self.change_shape(Shapes.STAR))
 
     def show_color_picker(self):
         color = self.color_picker.getColor()
